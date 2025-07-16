@@ -27,7 +27,7 @@ The following metrics are exposed at `/metrics`:
    - **Type**: Histogram
    - **Labels**: method, path
    - **Description**: Response latency of HTTP requests
-   - 
+
 3. Standard Go and process metrics (from Prometheus collectors)
 
 ## Getting Started

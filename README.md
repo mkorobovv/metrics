@@ -8,12 +8,6 @@ This project demonstrates how to implement and use Prometheus metrics in a Go HT
 
 - Prometheus metrics endpoint
 
-- Example worker that generates traffic
-
-- Graceful shutdown handling
-
-- Structured logging
-
 ## Metrics Collected
 
 The following metrics are exposed at `/metrics`:

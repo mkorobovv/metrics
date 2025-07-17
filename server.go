@@ -55,7 +55,7 @@ func (w *responseWriter) WriteHeader(status int) {
 	w.ResponseWriter.WriteHeader(status)
 }
 
-func (s *ServerMetrics) WrapHandlerFunc(handlerFunc http.HandlerFunc) http.HandlerFunc {
+func (s *ServerMetrics) WrapHandler(handler http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		method := r.Method
 		path := r.URL.Path
@@ -65,7 +65,7 @@ func (s *ServerMetrics) WrapHandlerFunc(handlerFunc http.HandlerFunc) http.Handl
 
 		rw := &responseWriter{ResponseWriter: w}
 
-		handlerFunc(rw, r)
+		handler.ServeHTTP(rw, r)
 
 		status := rw.status
 		if rw.status == 0 {

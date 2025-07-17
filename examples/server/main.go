@@ -30,7 +30,7 @@ func main() {
 
 	r := mux.NewRouter()
 	r.Handle("/metrics", promhttp.HandlerFor(registry, promhttp.HandlerOpts{}))
-	r.HandleFunc("/health", serverMetrics.WrapHandlerFunc(healthHandler(logger))).Methods("GET")
+	r.HandleFunc("/health", serverMetrics.WrapHandler(healthHandler())).Methods("GET")
 
 	server := &http.Server{
 		Addr:         ":8080",
@@ -63,7 +63,7 @@ func main() {
 	}
 }
 
-func healthHandler(logger *slog.Logger) http.HandlerFunc {
+func healthHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
 

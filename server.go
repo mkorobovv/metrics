@@ -45,12 +45,12 @@ func (s *ServerMetrics) Collect(ch chan<- prometheus.Metric) {
 	}
 }
 
-type responseWriter struct {
+type statusWriter struct {
 	http.ResponseWriter
 	status int
 }
 
-func (w *responseWriter) WriteHeader(status int) {
+func (w *statusWriter) WriteHeader(status int) {
 	w.status = status
 	w.ResponseWriter.WriteHeader(status)
 }
@@ -63,12 +63,12 @@ func (s *ServerMetrics) WrapHandler(handler http.Handler) http.HandlerFunc {
 		timer := prometheus.NewTimer(s.latency.WithLabelValues(method, path))
 		defer timer.ObserveDuration()
 
-		rw := &responseWriter{ResponseWriter: w}
+		sw := &statusWriter{ResponseWriter: w}
 
-		handler.ServeHTTP(rw, r)
+		handler.ServeHTTP(sw, r)
 
-		status := rw.status
-		if rw.status == 0 {
+		status := sw.status
+		if sw.status == 0 {
 			status = http.StatusOK
 		}
 
